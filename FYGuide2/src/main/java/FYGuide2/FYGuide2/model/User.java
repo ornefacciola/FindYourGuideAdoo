@@ -6,23 +6,35 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity //tabla user
+@Entity //tabla user.
+@Table(name="users")
 //mapea objetos a una tabla
 //cada atributo una columna
 
 public class User {
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        private Long id;
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long userId;
 
-        @Column(name="name", nullable = false, length = 512)
-        private String name;
+        @Column(name = "email")
+        private String email;
 
-        public User (String name){
-                this.name = name;
-        }
+        @Column(name = "username")
+        private String username;
+
+        @Column(name = "user_password")
+        private String userPassword;
+
+        @Column(name = "first_name")
+        private String firstName;
+
+        @Column(name = "last_name")
+        private String lastName;
+
+
 }

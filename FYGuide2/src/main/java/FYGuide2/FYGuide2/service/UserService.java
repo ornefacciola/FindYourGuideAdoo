@@ -11,16 +11,28 @@ import java.util.List;
 @Service //hace un Singleton, instancia una sola clase de Service y encuentra los modelos de User, usa el mismo objeto en memoria
 //se encarga de ej encontraar todos los usuarios
 
-
 public class UserService {
 
-    @Autowired
-    UserRepository userRepository;
-    public User createUser(User user){
-        return user;
-    }
-    public List<User> getAllUsers(){
-            return userRepository.findAll();
+    private final UserRepository userRepository;
 
-    };
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User addUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public User getUserById(int userId) {
+        return userRepository.findById(userId).orElse(null);
+    }
+
+    public Iterable<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public void deleteUser(int userId) {
+        userRepository.deleteById(userId);
+    }
 }
