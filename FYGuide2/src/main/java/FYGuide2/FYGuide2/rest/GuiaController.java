@@ -71,4 +71,12 @@ public class GuiaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @DeleteMapping("/changeProfile/{userId}")
+    public ResponseEntity<Void> changeProfile(@PathVariable Long userId) {
+        ResponseEntity<Void> response = guiaService.ChangeProfile(userId);
+
+        return response;
+
+    };
 }

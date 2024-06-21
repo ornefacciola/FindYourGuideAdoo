@@ -2,8 +2,12 @@ package FYGuide2.FYGuide2.service;
 
 import FYGuide2.FYGuide2.model.Guia;
 import FYGuide2.FYGuide2.model.Servicio;
+import FYGuide2.FYGuide2.model.Turista;
 import FYGuide2.FYGuide2.repository.GuiaRepository;
+import FYGuide2.FYGuide2.repository.TuristaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,10 +17,16 @@ public class GuiaService {
 
     private final GuiaRepository guiaRepository;
 
+    private final TuristaRepository turistaRepository;
+
+
     @Autowired
-    public GuiaService(GuiaRepository guiaRepository) {
+    public GuiaService(GuiaRepository guiaRepository, TuristaRepository turistaRepository) {
         this.guiaRepository = guiaRepository;
+        this.turistaRepository = turistaRepository;
+
     }
+
 
     public Guia addGuia(Guia guia) {
         // Assuming logic for validation or additional processing before saving
@@ -60,4 +70,43 @@ public class GuiaService {
 
         return null; // or throw exception if guiaId is not found
     }
+
+    public ResponseEntity<Void> ChangeProfile(Long userId) {
+
+        Optional<Guia> guiaAborrar = guiaRepository.findById(userId);
+        if (guiaAborrar.isPresent()) {
+            Guia guia = guiaAborrar.get();
+
+            // Crear turista a partir de guia
+            Turista turistaAcrear = new Turista(
+                    guia.getUserId(),
+                    guia.getEmail(),
+                    guia.getUsername(),
+                    guia.getUserPassword(),
+                    guia.getFirstName(),
+                    guia.getLastName(),
+                    guia.getDni(),
+                    guia.getCelular(),
+                    guia.getSex(),
+                    guia.getProfilePic()
+            );
+
+            // Guardar el turista en el repositorio de Turista
+            turistaRepository.save(turistaAcrear);
+
+            // Eliminar el guia
+            guiaRepository.deleteById(guiaAborrar.get().getUserId());
+            return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+         else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }
+    }
+
+
+
+
+
+
 }
