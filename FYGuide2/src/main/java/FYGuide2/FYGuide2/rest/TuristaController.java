@@ -1,9 +1,6 @@
 package FYGuide2.FYGuide2.rest;
 
-import FYGuide2.FYGuide2.model.Guia;
-import FYGuide2.FYGuide2.model.Servicio;
 import FYGuide2.FYGuide2.model.Turista;
-import FYGuide2.FYGuide2.service.GuiaService;
 import FYGuide2.FYGuide2.service.TuristaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -53,4 +50,9 @@ public class TuristaController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @DeleteMapping("/changeProfile/{userId}")
+    public ResponseEntity<Void> changeProfile(@PathVariable Long userId) {
+        ResponseEntity<Void> response = turistaService.changeProfileToGuia(userId);
+        return response;
+    }
 }
