@@ -13,7 +13,9 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="FYGuide2.FYGuide2.main" target="17" />
+      <module name="FYGuide2.FYGuide2.main~2" target="17" />
       <module name="FYGuide2.FYGuide2.test" target="17" />
+      <module name="FYGuide2.FYGuide2.test~2" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
