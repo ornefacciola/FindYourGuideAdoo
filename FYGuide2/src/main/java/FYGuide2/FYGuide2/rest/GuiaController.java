@@ -3,6 +3,7 @@ package FYGuide2.FYGuide2.rest;
 import FYGuide2.FYGuide2.model.Guia;
 import FYGuide2.FYGuide2.model.Servicio;
 import FYGuide2.FYGuide2.service.GuiaService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -79,4 +80,5 @@ public class GuiaController {
         return response;
 
     };
+
 }
