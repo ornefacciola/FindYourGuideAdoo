@@ -1,10 +1,9 @@
 package FYGuide2.FYGuide2.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
@@ -13,9 +12,10 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder
 @Entity
 @Table(name = "users")
-public class User {
+public abstract class User implements UserDetails {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long userId;
@@ -58,5 +58,36 @@ public class User {
                 this.dni = dni;
                 this.celular = celular;
                 this.profilePic = profilePic;
+        }
+
+
+        @Override
+        public String getUsername() {
+                return getEmail();
+        }
+
+
+        @Override
+        public String getPassword() {
+                return getUserPassword();
+        }
+        @Override
+        public boolean isAccountNonExpired() {
+                return true;
+        }
+
+        @Override
+        public boolean isAccountNonLocked() {
+                return true;
+        }
+
+        @Override
+        public boolean isCredentialsNonExpired() {
+                return true;
+        }
+
+        @Override
+        public boolean isEnabled() {
+                return true;
         }
 }
