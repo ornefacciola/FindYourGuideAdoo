@@ -13,9 +13,12 @@ import java.util.Date;
 public class ReservaService {
 
     private final ReservaRepository reservaRepository;
-
     public ReservaService(ReservaRepository reservaRepository) {
         this.reservaRepository = reservaRepository;
+    }
+
+    public Reserva getReservaById(Long idReserva) {
+        return reservaRepository.findById(idReserva).orElse(null);
     }
 
     public Notificacion addReserva(Servicio servicio, Date fechaInicio) {
@@ -24,5 +27,32 @@ public class ReservaService {
         reservaRepository.save(reserva);
         return notificacion;
     }
+
+    public Notificacion aceptarReserva(Reserva reserva) {
+        Notificacion notificacion = reserva.aceptar();
+        reservaRepository.save(reserva);
+        return notificacion;
+    }
+
+    public Notificacion rechazarReserva(Reserva reserva) {
+        Notificacion notificacion = reserva.rechazar();
+        reservaRepository.save(reserva);
+        return notificacion;
+    }
+
+    public Notificacion cancelarReserva(Reserva reserva) {
+        Notificacion notificacion = reserva.cancelar();
+        reservaRepository.save(reserva);
+        return notificacion;
+    }
+
+
+    public Notificacion finalizarReserva(Reserva reserva) {
+        Notificacion notificacion = reserva.finalizar();
+        reservaRepository.save(reserva);
+        return notificacion;
+    }
+
+
 
 }
