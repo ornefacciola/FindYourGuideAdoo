@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("guias")
 public class GuiaController {
@@ -80,5 +82,16 @@ public class GuiaController {
         return response;
 
     };
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Guia>> searchGuias(
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) String location
+    ) {
+
+        List<Guia> guias = guiaService.searchGuias(firstName, lastName, location);
+        return new ResponseEntity<>(guias, HttpStatus.OK);
+    }
 
 }

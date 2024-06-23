@@ -17,6 +17,5 @@ public class FyGuide2Application {
 
 		SpringApplication.run(FyGuide2Application.class, args);
 
-
 	}
 }

@@ -1,5 +1,7 @@
 package FYGuide2.FYGuide2.service;
 
+import FYGuide2.FYGuide2.rest.DTO.GuiaDTO;
+
 import FYGuide2.FYGuide2.model.Guia;
 import FYGuide2.FYGuide2.model.Servicio;
 import FYGuide2.FYGuide2.model.Turista;
@@ -7,6 +9,7 @@ import FYGuide2.FYGuide2.repository.GuiaRepository;
 import FYGuide2.FYGuide2.repository.TuristaRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -107,7 +110,17 @@ public class GuiaService {
 
         }
     }
+
+    public List<Guia> searchGuias(String firstName, String lastName, String location) {
+        Specification<Guia> spec = Specification
+                .where(GuiaDTO.hasFirstName(firstName))
+                .and(GuiaDTO.hasLastName(lastName))
+                .and(GuiaDTO.hasCity(location));
+
+        return guiaRepository.findAll(spec);
     }
+
+}
 
 
 
