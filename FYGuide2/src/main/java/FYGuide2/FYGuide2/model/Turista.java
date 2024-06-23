@@ -20,6 +20,11 @@ import java.util.List;
 @SuperBuilder
 @Entity
 public class Turista extends User{
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "turista_id")
+    private Turista turista;
+
     public Turista(){}
 
     public Turista(Long userId, String email, String username, String userPassword, String firstName, String lastName, Integer dni, Integer celular, String sex, String profile_pic) {

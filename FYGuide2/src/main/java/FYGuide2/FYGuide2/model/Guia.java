@@ -1,5 +1,6 @@
 package FYGuide2.FYGuide2.model;
 
+import FYGuide2.FYGuide2.model.Reserva.Reserva;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,6 +33,10 @@ public class Guia extends User {
     @JoinColumn(name = "guia_id")
     private List<Servicio> serviciosOfrecidos = new ArrayList<>(); // Initialize to avoid NPE
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "guia_id")
+    private List<Reserva> reservas = new ArrayList<>();
+
     public Guia(Long userId, String email, String username, String userPassword, String firstName, String lastName, Integer dni, Integer celular, String sex, String profilePic, String licencia, List<String> locations) {
         super(userId, email, username, userPassword, firstName, lastName, dni, celular, sex, profilePic);
         this.licencia = licencia;
@@ -43,4 +48,6 @@ public class Guia extends User {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
     }
+
+
 }

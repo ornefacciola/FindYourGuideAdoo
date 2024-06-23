@@ -1,5 +1,6 @@
 package FYGuide2.FYGuide2.service;
 
+import FYGuide2.FYGuide2.model.Reserva.Reserva;
 import FYGuide2.FYGuide2.rest.DTO.GuiaDTO;
 
 import FYGuide2.FYGuide2.model.Guia;
@@ -119,6 +120,9 @@ public class GuiaService {
 
         return guiaRepository.findAll(spec);
     }
+
+
+
 
 }
 

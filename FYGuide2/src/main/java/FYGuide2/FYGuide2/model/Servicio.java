@@ -34,6 +34,10 @@ public class Servicio {
     @Column(name = "duracion_servicio")
     private Integer duracionServicio;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "guia_id")
+    private Guia guia;
+
     public Servicio(Long id, Integer duracionServicio, String ciudad, String categoria, String descripcion, Double precio, String serviceName) {
         this.id = id;
         this.duracionServicio = duracionServicio;
