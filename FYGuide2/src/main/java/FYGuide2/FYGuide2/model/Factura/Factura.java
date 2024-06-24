@@ -64,7 +64,7 @@ public class Factura {
         }
         setEstado("Pagado");
         setAdapterPagos(new Stripe());
-        return adapterPagos.pagar();
+        return adapterPagos.pagar(importeFinal, fecha);
     }
 
 

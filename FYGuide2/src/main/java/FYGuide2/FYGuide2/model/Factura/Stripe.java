@@ -8,8 +8,8 @@ import java.util.Date;
 
 public class Stripe implements AdapterPagos{
 
-    public String pagar(){
-        return "Pago realizado con Stripe";
+    public String pagar(Double importeFinal, Date fecha){
+        return "El dia: " + fecha + " pagaste un total de $" + importeFinal + ", con Stripe";
     }
 
 }

@@ -85,11 +85,11 @@ public class TuristaController {
             @RequestParam Date fechaInicio,
             @RequestParam String destino
     ) {
-        boolean isAvaible = guiaService.isServiceAvaible(idServicio, fechaInicio, destino);
+        boolean isAvaible = guiaService.isGuiaAvaible(idServicio, fechaInicio, destino);
 
         if (isAvaible) {
             Servicio servicio = servicioService.getServiceById(idServicio);
-            Notificacion noti = reservaService.addReserva(servicio, fechaInicio, idTurista);
+            Notificacion noti = reservaService.addReserva(servicio, fechaInicio, destino, idTurista);
             return new ResponseEntity<>(noti, HttpStatus.CREATED);
         } else {
             Notificacion notificacion = new Notificacion("No puedes contratar este servicio", new Date(), null);

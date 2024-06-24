@@ -1,10 +1,12 @@
 package FYGuide2.FYGuide2.model;
 
+import FYGuide2.FYGuide2.model.Reserva.Reserva;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -46,7 +48,6 @@ public abstract class User implements UserDetails {
 
         @Column(name = "profile_pic")
         private String profilePic;
-
 
 
         public User(String email, Long userId, String userPassword, String username, String sex, String firstName, String lastName, Integer dni, Integer celular, String profilePic) {

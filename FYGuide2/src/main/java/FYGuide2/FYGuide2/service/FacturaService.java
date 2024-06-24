@@ -14,6 +14,9 @@ public class FacturaService {
         this.facturaRepository = facturaRepository;
     }
 
+    public Iterable<Factura> getAllFacturas() {
+        return facturaRepository.findAll();
+    }
 
     public Factura getFacturaById(Long idFactura) {
         return facturaRepository.findById(idFactura).orElse(null);

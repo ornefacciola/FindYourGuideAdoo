@@ -121,7 +121,7 @@ public class GuiaService {
     }
 
 
-    public boolean isServiceAvaible(Long idServicio, Date fechaInicio, String destino) {
+    public boolean isGuiaAvaible(Long idServicio, Date fechaInicio, String destino) {
         Servicio servicio = servicioRepository.findById(idServicio).orElse(null);
 
         Long guiaId = servicio.getGuiaId();

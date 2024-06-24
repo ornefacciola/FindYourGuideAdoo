@@ -2,12 +2,8 @@ package FYGuide2.FYGuide2.model.Reserva;
 
 import FYGuide2.FYGuide2.model.Factura.Factura;
 import FYGuide2.FYGuide2.model.Notificador.Notificacion;
-import FYGuide2.FYGuide2.model.Notificador.Notificador;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
+import FYGuide2.FYGuide2.model.ViajesFinalizados;
+import FYGuide2.FYGuide2.repository.ViajesFinalizadosRepository;
 
 import java.util.Date;
 
@@ -17,11 +13,6 @@ public class EstadoAceptado implements EstadoReserva{
 
     public String status = "accepted";
 
-    /*private final Notificador notificador;
-
-    public EstadoAceptado(Notificador notificador) {
-        this.notificador = notificador;
-    }*/
 
     @Override
     public Notificacion aceptarReserva(Reserva reserva) {
@@ -59,6 +50,7 @@ public class EstadoAceptado implements EstadoReserva{
                 reserva.calcularComision(),
                 reserva.calcularImporteFinal(),
                 "No pagada");
+
 
         reserva.setFactura(factura);
         reserva.setEstadoReserva(new EstadoFinalizado());

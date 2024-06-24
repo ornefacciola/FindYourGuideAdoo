@@ -2,11 +2,9 @@ package FYGuide2.FYGuide2.model.Reserva;
 
 
 import FYGuide2.FYGuide2.model.Factura.Factura;
-import FYGuide2.FYGuide2.model.Guia;
 import FYGuide2.FYGuide2.model.Notificador.Notificacion;
 import FYGuide2.FYGuide2.model.Notificador.Notificador;
 import FYGuide2.FYGuide2.model.Servicio;
-import FYGuide2.FYGuide2.model.Turista;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +12,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -43,9 +40,8 @@ public class Reserva {
     private Servicio servicio;
 
 
-    /*@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "turista_id")
-    private Turista turista;*/
+    @Column(name = "destino")
+    private String destino;
 
     @Column(name = "turista_id")
     private Long turistaId;
@@ -53,9 +49,6 @@ public class Reserva {
     @Column(name = "guia_id")
     private Long guiaId;
 
-    /*@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "guia_id")
-    private Guia guia;*/
 
     @Column(name = "estado")
     private String estado;
@@ -76,10 +69,11 @@ public class Reserva {
 
 
 
-    public Reserva(Servicio servicio, Date fechaInicio, Double anticipo, Long turista){
+    public Reserva(Servicio servicio, Date fechaInicio, String destino, Double anticipo, Long turista){
         this.servicio = servicio;
         this.fechaInicio = fechaInicio;
         this.anticipo = anticipo;
+        this.destino = destino;
         this.turistaId = turista;
         this.guiaId = servicio.getGuiaId();
         this.estado = "Reservado";

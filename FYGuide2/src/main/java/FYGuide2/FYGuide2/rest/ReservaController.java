@@ -40,6 +40,8 @@ public class ReservaController {
         }
     }
 
+
+
     @PutMapping("/{idReserva}/aceptar")
     public ResponseEntity<Notificacion> aceptarReserva(@PathVariable Long idReserva) {
         Reserva reserva = reservaService.getReservaById(idReserva);
@@ -76,7 +78,6 @@ public class ReservaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
 
     @PutMapping("/{idReserva}/finalizar")
     public ResponseEntity<Notificacion> finalizarReserva(@PathVariable Long idReserva) {

@@ -6,10 +6,7 @@ import FYGuide2.FYGuide2.model.Notificador.Notificador;
 import FYGuide2.FYGuide2.service.FacturaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("facturas")
@@ -23,6 +20,12 @@ public class FacturaController {
         this.notificador = notificador;
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<Iterable<Factura>> getAllFacturas() {
+        Iterable<Factura> facturas = facturaService.getAllFacturas();
+        return new ResponseEntity<>(facturas, HttpStatus.OK);
+    }
+
     @PutMapping("/{idFactura}/pagar")
     public ResponseEntity<String> pagarFactura(@PathVariable Long idFactura) {
         Factura factura = facturaService.getFacturaById(idFactura);
@@ -34,6 +37,8 @@ public class FacturaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+
 
 
 }

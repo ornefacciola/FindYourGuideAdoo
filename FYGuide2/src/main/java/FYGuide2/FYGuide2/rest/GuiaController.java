@@ -107,7 +107,7 @@ public class GuiaController {
             @RequestParam Date fechaInicio,
             @RequestParam String destino
     ) {
-        boolean isAvaible = guiaService.isServiceAvaible(idServicio, fechaInicio, destino);
+        boolean isAvaible = guiaService.isGuiaAvaible(idServicio, fechaInicio, destino);
         if (isAvaible) {
             return new ResponseEntity<>(
                     "Puedes contratar este servicio, se te cobrara $"
