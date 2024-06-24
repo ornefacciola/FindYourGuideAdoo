@@ -1,9 +1,6 @@
-/*package FYGuide2.FYGuide2.service;
+package FYGuide2.FYGuide2.service;
 
-
-import FYGuide2.FYGuide2.model.Guia;
 import FYGuide2.FYGuide2.model.Turista;
-import FYGuide2.FYGuide2.repository.GuiaRepository;
 import FYGuide2.FYGuide2.repository.TuristaRepository;
 import FYGuide2.FYGuide2.rest.auth.*;
 import FYGuide2.FYGuide2.rest.config.JwtService;
@@ -17,12 +14,11 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceTurista {
+
+    private final TuristaRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final TuristaRepository trepository;
-
-
 
     public AuthenticationResponse register(RegisterTuristaRequest request) {
         Turista user = Turista.builder()
@@ -37,7 +33,7 @@ public class AuthenticationServiceTurista {
                 .profilePic(request.getProfilePic())
                 .build();
 
-        trepository.save(user);
+        repository.save(user);
 
         var jwtToken = jwtService.generateToken((UserDetails) user);
         return AuthenticationResponse.builder()
@@ -45,18 +41,17 @@ public class AuthenticationServiceTurista {
                 .build();
     }
 
-
-    public AuthenticationResponse authenticate(AuthenticationRequestTurista request) {
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getUserPassword()));
 
-        var user = trepository.findByEmail(request.getEmail())
+        var user = repository.findByEmail(request.getEmail())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken((UserDetails) user);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .build();
     }
-}*/
+}

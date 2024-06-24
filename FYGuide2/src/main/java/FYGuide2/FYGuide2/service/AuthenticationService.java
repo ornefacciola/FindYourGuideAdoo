@@ -35,8 +35,6 @@ public class AuthenticationService {
                 .celular(request.getCelular())
                 .sex(request.getSex())
                 .profilePic(request.getProfilePic())
-                .licencia(request.getLicencia())
-                .locations(request.getLocations())
                 .build();
 
         repository.save(user);

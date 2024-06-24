@@ -32,7 +32,7 @@ public class TuristaController {
         this.reservaService = reservaService;
         this.servicioService = servicioService;
     }
-
+    /*
     @PostMapping("/add")
     public ResponseEntity<Turista> addTurista(@RequestBody Turista turista) {
         Turista savedTurista = turistaService.addTurista(turista);
@@ -42,7 +42,7 @@ public class TuristaController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
+*/
     @GetMapping("/{turistaId}")
     public ResponseEntity<Turista> getTuristaById(@PathVariable Long turistaId) {
         Turista turista = turistaService.getTuristaById(turistaId);

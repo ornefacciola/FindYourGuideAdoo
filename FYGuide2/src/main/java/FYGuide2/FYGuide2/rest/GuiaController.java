@@ -30,7 +30,7 @@ public class GuiaController {
         this.guiaService = guiaService;
         this.servicioService = servicioService;
     }
-
+    /*
     @PostMapping("/add")
     public ResponseEntity<Guia> addGuia(@RequestBody Guia guia) {
         Guia savedGuia = guiaService.addGuia(guia);
@@ -39,7 +39,7 @@ public class GuiaController {
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-    }
+    }*/
 
     @GetMapping("/{guiaId}")
     public ResponseEntity<Guia> getGuiaById(@PathVariable Long guiaId) {

@@ -25,5 +25,4 @@ public class RegisterRequest {
     private String licencia;  // Guia specific
     private List<String> locations;  // Guia specific
 
-
 }

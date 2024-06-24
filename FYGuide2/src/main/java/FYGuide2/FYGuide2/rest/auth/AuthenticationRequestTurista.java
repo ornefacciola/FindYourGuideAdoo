@@ -1,5 +1,5 @@
 package FYGuide2.FYGuide2.rest.auth;
-/*
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,4 +15,3 @@ public class AuthenticationRequestTurista {
     private String userPassword;
 
 }
-*/
