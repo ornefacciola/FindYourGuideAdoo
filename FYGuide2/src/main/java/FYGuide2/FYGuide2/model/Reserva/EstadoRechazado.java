@@ -13,27 +13,28 @@ public class EstadoRechazado implements EstadoReserva{
             this.notificador = notificador;
         }*/
 
+        public String status = "rejected";
         @Override
         public Notificacion aceptarReserva(Reserva reserva) {
-            Notificacion notificacion = new Notificacion("La reserva ya ha sido rechazada", new Date(), null);
+            Notificacion notificacion = new Notificacion("La reserva ya ha sido rechazada", new Date(), reserva.getTuristaId());
             return notificacion;
         }
 
         @Override
         public Notificacion rechazarReserva(Reserva reserva) {
-            Notificacion notificacion = new Notificacion("La reserva ya ha sido rechazada", new Date(),null);
+            Notificacion notificacion = new Notificacion("La reserva ya ha sido rechazada", new Date(),reserva.getTuristaId());
             return notificacion;
         }
 
         @Override
         public Notificacion cancelarReserva(Reserva reserva) {
-            Notificacion noti = new Notificacion("La reserva ya ha sido rechazada", new Date(), reserva.getTurista());
+            Notificacion noti = new Notificacion("La reserva ya ha sido rechazada", new Date(), reserva.getTuristaId());
             return noti;
         }
 
         @Override
         public Notificacion finalizarReserva(Reserva reserva) {
-            Notificacion noti = new Notificacion("La reserva ya ha sido rechazada", new Date(), null);
+            Notificacion noti = new Notificacion("La reserva ya ha sido rechazada", new Date(), reserva.getTuristaId());
             return noti;
         }
 }

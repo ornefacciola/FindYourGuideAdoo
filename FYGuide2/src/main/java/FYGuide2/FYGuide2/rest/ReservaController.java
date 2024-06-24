@@ -7,10 +7,7 @@ import FYGuide2.FYGuide2.model.Reserva.Reserva;
 import FYGuide2.FYGuide2.service.ReservaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("reservas")
@@ -23,6 +20,24 @@ public class ReservaController {
     public ReservaController(ReservaService reservaService, Notificador notificador) {
         this.reservaService = reservaService;
         this.notificador = notificador;
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<Iterable<Reserva>> getAllReservas() {
+        Iterable<Reserva> reservas = reservaService.getAllReservas();
+        return new ResponseEntity<>(reservas, HttpStatus.OK);
+    }
+
+    @GetMapping("/{idReserva}")
+    public ResponseEntity<Reserva> getReservaById(@PathVariable Long idReserva) {
+        System.out.println("GET RESERVA: " + idReserva);
+        Reserva reserva = reservaService.getReservaById(idReserva);
+
+        if (reserva != null) {
+            return new ResponseEntity<>(reserva, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/{idReserva}/aceptar")

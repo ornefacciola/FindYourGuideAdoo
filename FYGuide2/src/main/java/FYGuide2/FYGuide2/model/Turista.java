@@ -1,4 +1,5 @@
 package FYGuide2.FYGuide2.model;
+import FYGuide2.FYGuide2.model.Reserva.Reserva;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,12 +19,17 @@ import java.util.List;
 @Getter
 @Setter
 @SuperBuilder
+@AllArgsConstructor
 @Entity
 public class Turista extends User{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "turista_id")
     private Turista turista;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "turista_id")
+    private List<Reserva> reservas = new ArrayList<>();
 
     public Turista(){}
 

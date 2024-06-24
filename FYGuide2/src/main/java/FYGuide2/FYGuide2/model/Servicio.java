@@ -1,10 +1,12 @@
 package FYGuide2.FYGuide2.model;
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 @Getter
 @Setter
@@ -28,20 +30,14 @@ public class Servicio {
     @Column(name = "categoria")
     private String categoria;
 
-    @Column(name = "ciudad")
-    private String ciudad;
-
     @Column(name = "duracion_servicio")
     private Integer duracionServicio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "guia_id")
-    private Guia guia;
+    @Column(name = "guia_id")
+    private Long guiaId;
 
-    public Servicio(Long id, Integer duracionServicio, String ciudad, String categoria, String descripcion, Double precio, String serviceName) {
-        this.id = id;
+    public Servicio(Integer duracionServicio, String categoria, String descripcion, Double precio, String serviceName) {
         this.duracionServicio = duracionServicio;
-        this.ciudad = ciudad;
         this.categoria = categoria;
         this.descripcion = descripcion;
         this.precio = precio;

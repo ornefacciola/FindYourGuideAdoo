@@ -47,6 +47,8 @@ public abstract class User implements UserDetails {
         @Column(name = "profile_pic")
         private String profilePic;
 
+
+
         public User(String email, Long userId, String userPassword, String username, String sex, String firstName, String lastName, Integer dni, Integer celular, String profilePic) {
                 this.email = email;
                 this.userId = userId;

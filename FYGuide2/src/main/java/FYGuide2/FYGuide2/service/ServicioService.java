@@ -14,9 +14,11 @@ import java.util.List;
 public class ServicioService {
 
     private final ServicioRepository servicioRepository;
+    private final GuiaService guiaService;
 
-    public ServicioService(ServicioRepository servicioRepository) {
+    public ServicioService(ServicioRepository servicioRepository, GuiaService guiaService) {
         this.servicioRepository = servicioRepository;
+        this.guiaService = guiaService;
     }
 
 
@@ -25,9 +27,14 @@ public class ServicioService {
     }
 
 
-    public boolean isServiceAvaible(Long idServicio, Date fechaInicio, String destino) {
-        Servicio servicio = servicioRepository.findById(idServicio).orElse(null);
-        Guia guia = servicio.getGuia();
+    public Iterable<Servicio> getAllServices () {
+        return servicioRepository.findAll();
+    }
+
+
+    /*public boolean isServiceAvaible(Long guiaId, Long idServicio, Date fechaInicio, String destino) {
+        //Servicio servicio = servicioRepository.findById(idServicio).orElse(null);
+        Guia guia = guiaService.getGuiaById(guiaId);
         List<Reserva> reservas = guia.getReservas();
 
         List<String> locations = guia.getLocations();
@@ -67,6 +74,6 @@ public class ServicioService {
             }
         }
         return true;
-    }
+    }*/
 
 }

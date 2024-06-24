@@ -13,27 +13,29 @@ public class EstadoFinalizado implements EstadoReserva{
         this.notificador = notificador;
     }*/
 
+    public String status = "finished";
+
     @Override
     public Notificacion aceptarReserva(Reserva reserva) {
-        Notificacion notificacion = new Notificacion("La reserva ya ha sido finalizada", new Date(), null);
+        Notificacion notificacion = new Notificacion("La reserva ya ha sido finalizada", new Date(), reserva.getTuristaId());
         return notificacion;
     }
 
     @Override
     public Notificacion rechazarReserva(Reserva reserva) {
-        Notificacion notificacion = new Notificacion("La reserva ya ha sido finalizada", new Date(),null);
+        Notificacion notificacion = new Notificacion("La reserva ya ha sido finalizada", new Date(),reserva.getTuristaId());
         return notificacion;
     }
 
     @Override
     public Notificacion cancelarReserva(Reserva reserva) {
-        Notificacion noti = new Notificacion("La reserva ya ha sido finalizada", new Date(), reserva.getTurista());
+        Notificacion noti = new Notificacion("La reserva ya ha sido finalizada", new Date(), reserva.getTuristaId());
         return noti;
     }
 
     @Override
     public Notificacion finalizarReserva(Reserva reserva) {
-        Notificacion noti = new Notificacion("La reserva ya ha sido finalizada", new Date(), null);
+        Notificacion noti = new Notificacion("La reserva ya ha sido finalizada", new Date(), reserva.getTuristaId());
         return noti;
     }
 }

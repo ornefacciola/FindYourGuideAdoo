@@ -1,6 +1,13 @@
 package FYGuide2.FYGuide2.rest;
 
+import FYGuide2.FYGuide2.model.Factura.Factura;
+import FYGuide2.FYGuide2.model.Guia;
+import FYGuide2.FYGuide2.model.Notificador.Notificacion;
+import FYGuide2.FYGuide2.model.Servicio;
 import FYGuide2.FYGuide2.model.Turista;
+import FYGuide2.FYGuide2.service.GuiaService;
+import FYGuide2.FYGuide2.service.ReservaService;
+import FYGuide2.FYGuide2.service.ServicioService;
 import FYGuide2.FYGuide2.service.TuristaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -8,14 +15,22 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Date;
+
 @RestController
 @RequestMapping("turistas")
 public class TuristaController {
     private final TuristaService turistaService;
+    private final GuiaService guiaService;
+    private final ReservaService reservaService;
+    private final ServicioService servicioService;
 
     @Autowired
-    public TuristaController(TuristaService turistaService) {
+    public TuristaController(TuristaService turistaService, GuiaService guiaService, ReservaService reservaService, ServicioService servicioService) {
         this.turistaService = turistaService;
+        this.guiaService = guiaService;
+        this.reservaService = reservaService;
+        this.servicioService = servicioService;
     }
 
     @PostMapping("/add")
@@ -54,5 +69,31 @@ public class TuristaController {
     public ResponseEntity<Void> changeProfile(@PathVariable Long userId) {
         ResponseEntity<Void> response = turistaService.changeProfileToGuia(userId);
         return response;
+    }
+
+
+    @GetMapping("/{turistaId}/facturas")
+    public ResponseEntity<Iterable<Factura>> getFacturas(@PathVariable Long turistaId) {
+        Iterable<Factura> facturas = turistaService.getFacturas(turistaId);
+        return new ResponseEntity<>(facturas, HttpStatus.OK);
+    }
+
+    @PostMapping("/{idServicio}/contratar/{idTurista}")
+    public ResponseEntity<Notificacion> contratarServicio(
+            @PathVariable Long idServicio,
+            @PathVariable Long idTurista,
+            @RequestParam Date fechaInicio,
+            @RequestParam String destino
+    ) {
+        boolean isAvaible = guiaService.isServiceAvaible(idServicio, fechaInicio, destino);
+
+        if (isAvaible) {
+            Servicio servicio = servicioService.getServiceById(idServicio);
+            Notificacion noti = reservaService.addReserva(servicio, fechaInicio, idTurista);
+            return new ResponseEntity<>(noti, HttpStatus.CREATED);
+        } else {
+            Notificacion notificacion = new Notificacion("No puedes contratar este servicio", new Date(), null);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

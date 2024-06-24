@@ -12,11 +12,13 @@ public class EstadoReservado implements EstadoReserva{
         this.notificador = notificador;
     }*/
 
+    public String status = "reserved";
+
     @Override
     public Notificacion aceptarReserva(Reserva reserva) {
         reserva.setEstadoReserva(new EstadoAceptado());
         reserva.setEstado("Aceptado");
-        Notificacion notificacion = new Notificacion("Reserva aceptada", new Date(), null);
+        Notificacion notificacion = new Notificacion("Reserva aceptada", new Date(), reserva.getTuristaId());//En vez de null tiene que ir el turista
         //notificador.notificar(notificacion);
         return notificacion;
     }
@@ -28,7 +30,7 @@ public class EstadoReservado implements EstadoReserva{
         Notificacion notificacion = new Notificacion(
                 "Reserva rechazada, se te ha depositado el anticipo",
                 new Date(),
-                null);
+                reserva.getTuristaId());
         //notificador.notificar(notificacion);
         reserva.setAnticipo(0.0);
         return notificacion;
@@ -36,13 +38,13 @@ public class EstadoReservado implements EstadoReserva{
 
     @Override
     public Notificacion cancelarReserva(Reserva reserva) {
-        Notificacion noti = new Notificacion("No se puede cancelar una reserva que no ha sido aceptada", new Date(), null);
+        Notificacion noti = new Notificacion("No se puede cancelar una reserva que no ha sido aceptada", new Date(), reserva.getTuristaId());
         return noti;
     }
 
     @Override
     public Notificacion finalizarReserva(Reserva reserva) {
-        Notificacion noti = new Notificacion("No se puede finalizar una reserva que no ha sido aceptada", new Date(), null);
+        Notificacion noti = new Notificacion("No se puede finalizar una reserva que no ha sido aceptada", new Date(), reserva.getTuristaId());
         return noti;
     }
 }

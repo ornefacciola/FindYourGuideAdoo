@@ -4,6 +4,7 @@ package FYGuide2.FYGuide2.service;
 import FYGuide2.FYGuide2.model.Notificador.Notificacion;
 import FYGuide2.FYGuide2.model.Reserva.Reserva;
 import FYGuide2.FYGuide2.model.Servicio;
+import FYGuide2.FYGuide2.model.Turista;
 import FYGuide2.FYGuide2.repository.ReservaRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +18,17 @@ public class ReservaService {
         this.reservaRepository = reservaRepository;
     }
 
+    public Iterable<Reserva> getAllReservas() {
+        return reservaRepository.findAll();
+    }
+
     public Reserva getReservaById(Long idReserva) {
         return reservaRepository.findById(idReserva).orElse(null);
     }
 
-    public Notificacion addReserva(Servicio servicio, Date fechaInicio) {
-        Reserva reserva = new Reserva(servicio, fechaInicio, servicio.getPrecio() * 0.1);
-        Notificacion notificacion = new Notificacion("Reserva creada", new Date(), reserva.getTurista());
+    public Notificacion addReserva(Servicio servicio, Date fechaInicio, Long turista) {
+        Reserva reserva = new Reserva(servicio, fechaInicio, servicio.getPrecio() * 0.25, turista);
+        Notificacion notificacion = new Notificacion("Reserva creada", new Date(), turista);
         reservaRepository.save(reserva);
         return notificacion;
     }
@@ -52,7 +57,5 @@ public class ReservaService {
         reservaRepository.save(reserva);
         return notificacion;
     }
-
-
 
 }

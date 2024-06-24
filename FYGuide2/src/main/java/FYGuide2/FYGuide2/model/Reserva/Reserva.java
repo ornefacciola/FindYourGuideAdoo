@@ -1,11 +1,13 @@
 package FYGuide2.FYGuide2.model.Reserva;
 
 
+import FYGuide2.FYGuide2.model.Factura.Factura;
 import FYGuide2.FYGuide2.model.Guia;
 import FYGuide2.FYGuide2.model.Notificador.Notificacion;
 import FYGuide2.FYGuide2.model.Notificador.Notificador;
 import FYGuide2.FYGuide2.model.Servicio;
 import FYGuide2.FYGuide2.model.Turista;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,17 +38,24 @@ public class Reserva {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "servicio_id")
     private Servicio servicio;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "turista_id")
-    private Turista turista;
+    private Turista turista;*/
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "turista_id")
+    private Long turistaId;
+
+    @Column(name = "guia_id")
+    private Long guiaId;
+
+    /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guia_id")
-    private Guia guia;
+    private Guia guia;*/
 
     @Column(name = "estado")
     private String estado;
@@ -60,22 +69,19 @@ public class Reserva {
     @Transient
     private Notificador notificador;
 
-    public Reserva(Long id, Date fechaInicio, Servicio servicio, Turista turista, Double anticipo) {
-        this.id = id;
-        this.fechaInicio = fechaInicio;
-        this.servicio = servicio;
-        this.turista = turista;
-        this.anticipo = anticipo;
-        this.guia = servicio.getGuia();
-        this.estado = "Pendiente";
-    }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "factura_id", referencedColumnName = "id")
+    private Factura factura;
 
 
-    public Reserva(Servicio servicio, Date fechaInicio, Double anticipo) {
+
+
+    public Reserva(Servicio servicio, Date fechaInicio, Double anticipo, Long turista){
         this.servicio = servicio;
         this.fechaInicio = fechaInicio;
         this.anticipo = anticipo;
-        this.guia = servicio.getGuia();
+        this.turistaId = turista;
+        this.guiaId = servicio.getGuiaId();
         this.estado = "Reservado";
     }
 
@@ -85,12 +91,9 @@ public class Reserva {
     }
 
 
-
     public void setEstadoReserva(EstadoReserva estadoReserva) {
         this.estadoReserva = estadoReserva;
     }
-
-
 
     public Notificacion aceptar() {
         Notificacion noti = this.estadoReserva.aceptarReserva(this);
@@ -149,6 +152,17 @@ public class Reserva {
 
     }
 
+    public Double calcularSubtotal(){
+        return this.servicio.getPrecio() - this.anticipo;
+    }
+
+    public Double calcularComision(){
+        return this.servicio.getPrecio() * 0.1;
+    }
+
+    public Double calcularImporteFinal(){
+        return this.calcularSubtotal() + this.calcularComision();
+    }
 
     public EstadoReserva getEstadoReservaInstance(String estado) {
         switch (estado) {
