@@ -26,13 +26,15 @@ public class ObserverTrofeo implements IObserver {
         if (rol == 2) {
             Guia guia = (Guia) user;
             if(user.getCantReseñas() >= 10) {
-                Double promedio = guia.getPuntuacion() / (double) user.getCantReseñas();
-                if(promedio >= 4.5) {
+                if(guia.getPuntuacionTotal() >= 4.5) {
                     user.setTrofeo("Trofeo al éxito");
                     return "Felicidades, has conseguido el trofeo: Trofeo al éxito!!!";
+                } else {
+                    user.setTrofeo(null);
                 }
                 return null;
             }
+            return null;
         }
         return null;
     }

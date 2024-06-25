@@ -119,11 +119,12 @@ public class GuiaService {
         }
     }
 
-    public List<Guia> searchGuias(String firstName, String lastName, String location) {
+    public List<Guia> searchGuias(String firstName, String lastName, String location, Double rating){
         Specification<Guia> spec = Specification
                 .where(GuiaDTO.hasFirstName(firstName))
                 .and(GuiaDTO.hasLastName(lastName))
-                .and(GuiaDTO.hasCity(location));
+                .and(GuiaDTO.hasCity(location))
+                .and(GuiaDTO.rating(rating));
 
         return guiaRepository.findAll(spec);
     }
@@ -194,7 +195,10 @@ public class GuiaService {
 
         guia.setCantReseñas(guia.getCantReseñas() + 1);
         guia.setPuntuacion(guia.getPuntuacion() + (double)puntuacion);
+        guia.setPuntuacionTotal(guia.getPuntuacion() / (double)guia.getCantReseñas());
         turista.setCantReseñas(turista.getCantReseñas() + 1);
+
+
 
         guia.notificarTrofeo(2);
         String a = turista.notificarTrofeo(1);

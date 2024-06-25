@@ -18,6 +18,10 @@ public class GuiaDTO {
         return (guia, cq, cb) -> location == null ? null : cb.isMember(location, guia.get("locations"));
     }
 
+    public static Specification<Guia> rating(Double rating) {
+        return (guia, cq, cb) -> rating == null ? null : cb.greaterThanOrEqualTo(guia.get("puntuacionTotal"), rating);
+    }
+
 
 }
 

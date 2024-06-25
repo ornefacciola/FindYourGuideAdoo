@@ -106,10 +106,11 @@ public class GuiaController {
     public ResponseEntity<List<Guia>> searchGuias(
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String lastName,
-            @RequestParam(required = false) String location
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) Double rating
     ) {
 
-        List<Guia> guias = guiaService.searchGuias(firstName, lastName, location);
+        List<Guia> guias = guiaService.searchGuias(firstName, lastName, location, rating);
         return new ResponseEntity<>(guias, HttpStatus.OK);
     }
 
