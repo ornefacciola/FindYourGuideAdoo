@@ -55,9 +55,6 @@ public class TuristaService {
         if (turistaOptional.isPresent()) {
             Turista turista = turistaOptional.get();
 
-
-
-                // Create Guia from Turista
             Guia guiaToCreate = new Guia(
                     turista.getEmail(),
                     turista.getUserId(),

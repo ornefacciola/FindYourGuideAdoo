@@ -6,7 +6,7 @@ public class PathsGuiaDTO {
     private Long guiaId;
     private Servicio servicio;
     private Long servicioId;
-    // Getters and Setters
+
     public Long getGuiaId() {
         return guiaId;
     }
@@ -14,6 +14,7 @@ public class PathsGuiaDTO {
     public void setGuiaId(Long guiaId) {
         this.guiaId = guiaId;
     }
+
     public Servicio getServicio() {
         return servicio;
     }

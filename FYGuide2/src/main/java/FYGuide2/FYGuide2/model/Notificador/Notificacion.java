@@ -19,5 +19,4 @@ public class Notificacion {
     private String mensaje;
     private Date fecha;
     private Long userDestino;
-
 }

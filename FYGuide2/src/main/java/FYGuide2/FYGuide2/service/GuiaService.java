@@ -91,7 +91,6 @@ public class GuiaService {
             Guia guia = guiaAborrar.get();
 
 
-
             // Crear turista a partir de guia
             Turista turistaAcrear = new Turista(
                     guia.getEmail(),

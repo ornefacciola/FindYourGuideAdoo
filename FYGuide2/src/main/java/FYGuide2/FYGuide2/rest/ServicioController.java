@@ -5,6 +5,7 @@ import FYGuide2.FYGuide2.model.Notificador.Notificacion;
 import FYGuide2.FYGuide2.model.Notificador.Notificador;
 import FYGuide2.FYGuide2.model.Servicio;
 import FYGuide2.FYGuide2.model.Turista;
+import FYGuide2.FYGuide2.rest.DTO.ServicioDTO;
 import FYGuide2.FYGuide2.service.ReservaService;
 import FYGuide2.FYGuide2.service.ServicioService;
 import FYGuide2.FYGuide2.service.TuristaService;
@@ -39,9 +40,10 @@ public class ServicioController {
         return new ResponseEntity<>(servicios, HttpStatus.OK);
     }
 
+    @GetMapping("/getById")
+    public ResponseEntity<Servicio> getServicio(@RequestBody ServicioDTO request) {
+        Long idServicio = request.getIdServicio(); // Extract idServicio from request body
 
-    @GetMapping("/{idServicio}")
-    public ResponseEntity<Servicio> getServicio(@PathVariable Long idServicio) {
         Servicio servicio = servicioService.getServiceById(idServicio);
         if (servicio != null) {
             return new ResponseEntity<>(servicio, HttpStatus.OK);

@@ -5,6 +5,8 @@ import FYGuide2.FYGuide2.model.Guia;
 import FYGuide2.FYGuide2.model.Notificador.Notificacion;
 import FYGuide2.FYGuide2.model.Servicio;
 import FYGuide2.FYGuide2.model.Turista;
+import FYGuide2.FYGuide2.rest.DTO.PathsGuiaDTO;
+import FYGuide2.FYGuide2.rest.DTO.PathsTuristaDTO;
 import FYGuide2.FYGuide2.service.GuiaService;
 import FYGuide2.FYGuide2.service.ReservaService;
 import FYGuide2.FYGuide2.service.ServicioService;
@@ -32,19 +34,11 @@ public class TuristaController {
         this.reservaService = reservaService;
         this.servicioService = servicioService;
     }
-    /*
-    @PostMapping("/add")
-    public ResponseEntity<Turista> addTurista(@RequestBody Turista turista) {
-        Turista savedTurista = turistaService.addTurista(turista);
-        if (savedTurista != null) {
-            return new ResponseEntity<>(savedTurista, HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-*/
-    @GetMapping("/{turistaId}")
-    public ResponseEntity<Turista> getTuristaById(@PathVariable Long turistaId) {
+
+    @GetMapping("/getById")
+    public ResponseEntity<Turista> getTuristaById(@RequestBody PathsTuristaDTO request) {
+        Long turistaId = request.getTuristaId(); // Extract turistaId from request body
+
         Turista turista = turistaService.getTuristaById(turistaId);
         if (turista != null) {
             return new ResponseEntity<>(turista, HttpStatus.OK);
@@ -59,17 +53,23 @@ public class TuristaController {
         return new ResponseEntity<>(turistas, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{turistaId}")
-    public ResponseEntity<Void> deleteTurista(@PathVariable Long turistaId) {
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteTurista(@RequestBody PathsTuristaDTO request) {
+        Long turistaId = request.getTuristaId(); // Extract turistaId from request body
+
         turistaService.deleteTurista(turistaId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/changeProfile/{userId}")
-    public ResponseEntity<Void> changeProfile(@PathVariable Long userId) {
+    @DeleteMapping("/changeProfile")
+    public ResponseEntity<Void> changeProfile(@RequestBody PathsTuristaDTO request) {
+        Long userId = request.getTuristaId(); // Extract userId from request body
+
         ResponseEntity<Void> response = turistaService.changeProfileToGuia(userId);
         return response;
     }
+
+
 
     @GetMapping("/{turistaId}/facturas")
     public ResponseEntity<Iterable<Factura>> getFacturas(@PathVariable Long turistaId) {
