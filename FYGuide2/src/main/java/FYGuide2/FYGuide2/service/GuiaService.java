@@ -9,7 +9,6 @@ import FYGuide2.FYGuide2.model.Servicio;
 import FYGuide2.FYGuide2.model.Turista;
 import FYGuide2.FYGuide2.repository.GuiaRepository;
 import FYGuide2.FYGuide2.repository.TuristaRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -78,7 +77,7 @@ public class GuiaService {
         return null; // or throw exception if guiaId is not found
     }
 
-    public ResponseEntity<Void> ChangeProfile(Long userId) {
+    public ResponseEntity<Void> changeProfile(Long userId) {
 
         Optional<Guia> guiaAborrar = guiaRepository.findById(userId);
         if (guiaAborrar.isPresent()) {

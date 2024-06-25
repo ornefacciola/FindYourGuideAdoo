@@ -1,9 +1,11 @@
 package FYGuide2.FYGuide2.rest.config;
 
 
+import FYGuide2.FYGuide2.model.Guia;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Role;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,6 +29,10 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
+                        .requestMatchers("guias/delete").hasRole("GUIA")
+                        .requestMatchers("guias/authenticate").permitAll()
+                        .requestMatchers("guias/register").permitAll()
+                        .requestMatchers("guias/all").permitAll()
                         .anyRequest()
                         .permitAll())
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -37,10 +38,15 @@ public class Turista extends User{
         super(userId, email, username, userPassword, firstName, lastName, dni, celular, sex, profile_pic);
     }
 
-    @Override
-    @Transient
+
+    /*
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Return an empty collection since Turista does not have any roles
         return Collections.emptyList();
+    }*/
+    @Override
+    @Transient
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_TURISTA"));
     }
 }

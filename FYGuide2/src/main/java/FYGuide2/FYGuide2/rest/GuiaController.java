@@ -1,18 +1,10 @@
 package FYGuide2.FYGuide2.rest;
 
 import FYGuide2.FYGuide2.model.Guia;
-import FYGuide2.FYGuide2.model.Notificador.Notificacion;
-import FYGuide2.FYGuide2.model.Servicio;
-import FYGuide2.FYGuide2.model.Turista;
-import FYGuide2.FYGuide2.rest.DTO.DeleteGuiaDTO;
+import FYGuide2.FYGuide2.rest.DTO.PathsGuiaDTO;
 import FYGuide2.FYGuide2.service.GuiaService;
 import FYGuide2.FYGuide2.service.ServicioService;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.http.HttpStatus;
@@ -35,16 +27,6 @@ public class GuiaController {
         this.guiaService = guiaService;
         this.servicioService = servicioService;
     }
-        /*
-        @PostMapping("/add")
-        public ResponseEntity<Guia> addGuia(@RequestBody Guia guia) {
-            Guia savedGuia = guiaService.addGuia(guia);
-            if (savedGuia != null) {
-                return new ResponseEntity<>(savedGuia, HttpStatus.CREATED);
-            } else {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-        }*/
 
     @GetMapping("/{guiaId}")
     public ResponseEntity<Guia> getGuiaById(@PathVariable Long guiaId) {
@@ -61,23 +43,19 @@ public class GuiaController {
         Iterable<Guia> guias = guiaService.getAllGuias();
         return new ResponseEntity<>(guias, HttpStatus.OK);
     }
-    /*
-    @DeleteMapping("/delete/{guiaId}")
-    public ResponseEntity<Void> deleteGuia(@PathVariable Long guiaId) {
-        guiaService.deleteGuia(guiaId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    } */
+
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteGuia(@RequestBody DeleteGuiaDTO request) {
+    public ResponseEntity<Void> deleteGuia(@RequestBody PathsGuiaDTO request) {
         guiaService.deleteGuia(request.getGuiaId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
-    @PostMapping("/{guiaId}/services/add")
-    public ResponseEntity<Optional<Guia>> addServiceToGuia(@PathVariable Long guiaId, @RequestBody Servicio servicio) {
-        Optional<Guia> servicioSaved = guiaService.addServiceToGuia(guiaId, servicio);
+    @PostMapping("/services/add")
+    public ResponseEntity<Optional<Guia>> addServiceToGuia(@RequestBody PathsGuiaDTO request) {
+        Long guiaId = request.getGuiaId();
+        Optional<Guia> servicioSaved = guiaService.addServiceToGuia(guiaId, request.getServicio());
         if (servicioSaved.isPresent()) {
             return new ResponseEntity<>(servicioSaved, HttpStatus.OK);
         } else {
@@ -85,8 +63,12 @@ public class GuiaController {
         }
     }
 
-    @DeleteMapping("/{guiaId}/services/remove/{servicioId}")
-    public ResponseEntity<Optional<Guia>> removeServiceFromGuia(@PathVariable Long guiaId, @PathVariable Long servicioId) {
+
+    @DeleteMapping("/services/remove")
+    public ResponseEntity<Optional<Guia>> removeServiceFromGuia(@RequestBody PathsGuiaDTO request) {
+        Long guiaId = request.getGuiaId();
+        Long servicioId = request.getServicioId();
+
         Optional<Guia> servicioDeleted = guiaService.removeServiceFromGuia(guiaId, servicioId);
         if (servicioDeleted.isPresent()) {
             return new ResponseEntity<>(servicioDeleted, HttpStatus.OK);
@@ -95,11 +77,14 @@ public class GuiaController {
         }
     }
 
-    @DeleteMapping("/changeProfile/{userId}")
-    public ResponseEntity<Void> changeProfile(@PathVariable Long userId) {
-        ResponseEntity<Void> response = guiaService.ChangeProfile(userId);
+
+    @DeleteMapping("/changeProfile")
+    public ResponseEntity<Void> changeProfile(@RequestBody PathsGuiaDTO request) {
+        Long userId = request.getGuiaId();
+
+        ResponseEntity<Void> response = guiaService.changeProfile(userId);
         return response;
-    };
+    }
 
     @GetMapping("/search")
     public ResponseEntity<List<Guia>> searchGuias(
@@ -130,10 +115,4 @@ public class GuiaController {
             return new ResponseEntity<>("No puedes contratar este servicio", HttpStatus.BAD_REQUEST);
         }
     }
-
-
-
-
-
-
 }
