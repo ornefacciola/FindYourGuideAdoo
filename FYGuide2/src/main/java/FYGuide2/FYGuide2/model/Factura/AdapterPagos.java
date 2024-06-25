@@ -8,5 +8,5 @@ public interface AdapterPagos {
 
     String pagarReserva(Double importeFinal, Date fecha);
     String pagarTotal(Double importeFinal, Date fecha);
-
+    String pagarPunitorio(Double importeFinal, Date fecha);
 }

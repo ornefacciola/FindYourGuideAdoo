@@ -50,6 +50,17 @@ public class FacturaController {
         }
     }
 
+    @PutMapping("/{idFactura}/pagar-punitorio")
+    public ResponseEntity<String> pagarPunitorio(@PathVariable Long idFactura) {
+        Factura factura = facturaService.getFacturaById(idFactura);
+
+        if (factura != null) {
+            String noti = facturaService.pagarPunitorio(factura);
+            return new ResponseEntity<>(noti, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 

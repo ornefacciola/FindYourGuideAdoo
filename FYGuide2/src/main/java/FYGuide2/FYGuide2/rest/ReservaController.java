@@ -100,7 +100,7 @@ public class ReservaController {
     }
 
     @PostMapping("/{idServicio}/contratar/{idTurista}")
-    public ResponseEntity<Notificacion> contratarServicio(
+    public ResponseEntity<Notificacion> realizarReserva(
             @PathVariable Long idServicio,
             @PathVariable Long idTurista,
             @RequestParam Date fechaInicio,

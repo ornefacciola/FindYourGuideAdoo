@@ -18,4 +18,8 @@ public class Stripe implements AdapterPagos{
         return "El dia: " + fecha + " pagaste un total de $" + importeFinal + ", con Stripe";
     }
 
+    public String pagarPunitorio(Double importeFinal, Date fecha){
+        return "El dia: " + fecha + " pagaste un total de $" + importeFinal + ", con Stripe";
+    }
+
 }

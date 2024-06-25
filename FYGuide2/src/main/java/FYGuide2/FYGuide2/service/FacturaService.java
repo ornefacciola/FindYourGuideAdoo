@@ -33,4 +33,10 @@ public class FacturaService {
         facturaRepository.save(factura);
         return notificacion;
     }
+
+    public String pagarPunitorio(Factura factura) {
+        String notificacion = factura.pagarPunitorio();
+        facturaRepository.save(factura);
+        return notificacion;
+    }
 }

@@ -17,9 +17,11 @@ public class EstadoPendiente implements EstadoReserva {
                 reserva.calcularSubtotal(),
                 0.0,
                 0.0,
+
                 //reserva.calcularComision(),
                 //reserva.calcularImporteFinal(),
                 reserva.getAnticipo(),
+                0.0,
                 "Reserva no pagada");
 
 

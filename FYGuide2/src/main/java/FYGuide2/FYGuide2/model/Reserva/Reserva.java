@@ -33,12 +33,10 @@ public class Reserva {
     @Column(name = "fecha_inicio")
     private Date fechaInicio;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "servicio_id")
     private Servicio servicio;
-
 
     @Column(name = "destino")
     private String destino;
@@ -49,24 +47,21 @@ public class Reserva {
     @Column(name = "guia_id")
     private Long guiaId;
 
-
     @Column(name = "estado")
     private String estado;
 
     @Column(name = "anticipo")
     private Double anticipo;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "factura_id", referencedColumnName = "id")
+    private Factura factura;
+
     @Transient
     private EstadoReserva estadoReserva;
 
     @Transient
     private Notificador notificador;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "factura_id", referencedColumnName = "id")
-    private Factura factura;
-
-
 
 
     public Reserva(Servicio servicio, Date fechaInicio, String destino, Long turista, Double anticipo){

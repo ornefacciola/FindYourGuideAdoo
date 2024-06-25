@@ -31,8 +31,11 @@ public class EstadoAceptado implements EstadoReserva{
 
     @Override
     public Notificacion cancelarReserva(Reserva reserva) {
+        reserva.getFactura().setPunitorio(reserva.calcularPunitorio());
+        reserva.getFactura().setEstado("Punitorio no pagado");
         reserva.setEstadoReserva(new EstadoCancelado());
         reserva.setEstado("Cancelado");
+
         Notificacion noti = new Notificacion(
                 "Tu reserva ha sido cancelada, se te aplicara un punitorio de $" + reserva.calcularPunitorio(),
                 new Date(),

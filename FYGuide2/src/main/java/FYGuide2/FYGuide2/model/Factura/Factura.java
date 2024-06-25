@@ -47,11 +47,14 @@ public class Factura {
     @Column(name = "anticipo")
     private Double anticipo;
 
+    @Column(name = "punitorio")
+    private Double punitorio;
+
     @Transient
     private AdapterPagos adapterPagos;
 
 
-    public Factura(Long turista, Date fecha, double subtotal, double comision, double importeFinal,  double anticipo, String estado) {
+    public Factura(Long turista, Date fecha, double subtotal, double comision, double importeFinal, double anticipo, double punitorio, String estado) {
         this.turista = turista;
         this.fecha = fecha;
         this.subtotal = subtotal;
@@ -59,11 +62,12 @@ public class Factura {
         this.importeFinal = importeFinal;
         this.estado = estado;
         this.anticipo = anticipo;
+        this.punitorio = punitorio;
     }
 
 
-    public String pagarReserva(){
-        if (estado.equals("Anticipo pagado")){
+    public String pagarReserva() {
+        if (estado.equals("Anticipo pagado")) {
             return "El anticipo ya fue pagado";
         }
         setEstado("Anticipo pagado");
@@ -72,19 +76,32 @@ public class Factura {
     }
 
 
-
-    public String pagarTotal(){
-        if (estado.equals("Pagado")){
+    public String pagarTotal() {
+        if (estado.equals("Pagado")) {
             return "La factura ya fue pagada";
         }
-        if (estado.equals("Total no pagado")){
+        if (estado.equals("Total no pagado")) {
             setEstado("Pagado");
             setAdapterPagos(new Stripe());
             return adapterPagos.pagarTotal(importeFinal, fecha);
-        }else{
+        } else {
             return "No se puede pagar la factura, aun no finalizo el viaje";
         }
 
+    }
+
+    public String pagarPunitorio() {
+        if (estado.equals("Punitorio pagado")) {
+            return "El punitorio ya fue pagado";
+        }
+
+        if (estado.equals("Punitorio no pagado")) {
+            setEstado("Pagado");
+            setAdapterPagos(new Stripe());
+            return adapterPagos.pagarTotal(punitorio, fecha);
+        } else {
+            return "No se puede pagar el punitorio, aun no se cancelo la reserva";
+        }
     }
 
 

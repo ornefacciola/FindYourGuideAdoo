@@ -35,7 +35,7 @@ public class GuiaController {
     }
 
     @GetMapping("/{guiaId}")
-    public ResponseEntity<Guia> getGuiaById(@PathVariable Long guiaId) {
+    public ResponseEntity<Guia> obtenerGuia(@PathVariable Long guiaId) {
         Guia guia = guiaService.getGuiaById(guiaId);
         if (guia != null) {
             return new ResponseEntity<>(guia, HttpStatus.OK);
@@ -93,7 +93,7 @@ public class GuiaController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Guia>> searchGuias(
+    public ResponseEntity<List<Guia>> buscarGuia(
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String lastName,
             @RequestParam(required = false) String location,
@@ -106,7 +106,7 @@ public class GuiaController {
 
 
     @GetMapping("/{idServicio}/consultar")
-    public ResponseEntity<String> getServicioById(
+    public ResponseEntity<String> consultarDisponibilidadGuia(
             @PathVariable Long idServicio,
             @RequestParam Date fechaInicio,
             @RequestParam String destino
@@ -124,7 +124,7 @@ public class GuiaController {
     }
 
     @PostMapping("/{idGuia}/reseña/{idTurista}")
-    public ResponseEntity<String> addReseña(
+    public ResponseEntity<String> agregarReseña(
             @PathVariable Long idGuia,
             @PathVariable Long idTurista,
             @RequestBody ReseñaDTO reseña

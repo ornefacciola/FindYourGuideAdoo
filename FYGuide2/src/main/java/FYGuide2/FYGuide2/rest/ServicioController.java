@@ -41,7 +41,7 @@ public class ServicioController {
 
 
     @GetMapping("/{idServicio}")
-    public ResponseEntity<Servicio> getServicioById(@PathVariable Long idServicio) {
+    public ResponseEntity<Servicio> getServicio(@PathVariable Long idServicio) {
         Servicio servicio = servicioService.getServiceById(idServicio);
         if (servicio != null) {
             return new ResponseEntity<>(servicio, HttpStatus.OK);
