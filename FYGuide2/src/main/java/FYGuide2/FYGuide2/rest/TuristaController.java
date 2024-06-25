@@ -77,22 +77,5 @@ public class TuristaController {
         return new ResponseEntity<>(facturas, HttpStatus.OK);
     }
 
-    @PostMapping("/{idServicio}/contratar/{idTurista}")
-    public ResponseEntity<Notificacion> contratarServicio(
-            @PathVariable Long idServicio,
-            @PathVariable Long idTurista,
-            @RequestParam Date fechaInicio,
-            @RequestParam String destino
-    ) {
-        boolean isAvaible = guiaService.isGuiaAvaible(idServicio, fechaInicio, destino);
 
-        if (isAvaible) {
-            Servicio servicio = servicioService.getServiceById(idServicio);
-            Notificacion noti = reservaService.addReserva(servicio, fechaInicio, destino, idTurista);
-            return new ResponseEntity<>(noti, HttpStatus.CREATED);
-        } else {
-            Notificacion notificacion = new Notificacion("No puedes contratar este servicio", new Date(), null);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
 }

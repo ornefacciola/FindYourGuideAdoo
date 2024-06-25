@@ -69,14 +69,14 @@ public class Reserva {
 
 
 
-    public Reserva(Servicio servicio, Date fechaInicio, String destino, Double anticipo, Long turista){
+    public Reserva(Servicio servicio, Date fechaInicio, String destino, Long turista, Double anticipo){
         this.servicio = servicio;
         this.fechaInicio = fechaInicio;
-        this.anticipo = anticipo;
         this.destino = destino;
         this.turistaId = turista;
         this.guiaId = servicio.getGuiaId();
-        this.estado = "Reservado";
+        this.anticipo = anticipo;
+        this.estado = "Pendiente";
     }
 
     @PostLoad
@@ -160,8 +160,8 @@ public class Reserva {
 
     public EstadoReserva getEstadoReservaInstance(String estado) {
         switch (estado) {
-            case "Reservado":
-                return new EstadoReservado();
+            case "Pendiente":
+                return new EstadoPendiente();
             case "Aceptado":
                 return new EstadoAceptado();
             case "Rechazado":

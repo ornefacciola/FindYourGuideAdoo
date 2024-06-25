@@ -31,7 +31,7 @@ public class ReservaService {
     }
 
     public Notificacion addReserva(Servicio servicio, Date fechaInicio, String destino, Long turista) {
-        Reserva reserva = new Reserva(servicio, fechaInicio, destino, servicio.getPrecio() * 0.25, turista);
+        Reserva reserva = new Reserva(servicio, fechaInicio, destino, turista,servicio.getPrecio() * 0.25);
         Notificacion notificacion = new Notificacion("Reserva creada", new Date(), turista);
         reservaRepository.save(reserva);
         return notificacion;

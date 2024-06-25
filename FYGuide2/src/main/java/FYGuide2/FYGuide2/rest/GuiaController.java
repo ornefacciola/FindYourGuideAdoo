@@ -2,6 +2,12 @@ package FYGuide2.FYGuide2.rest;
 
 import FYGuide2.FYGuide2.model.Guia;
 import FYGuide2.FYGuide2.rest.DTO.PathsGuiaDTO;
+import FYGuide2.FYGuide2.model.Notificador.Notificacion;
+import FYGuide2.FYGuide2.model.Servicio;
+import FYGuide2.FYGuide2.model.Turista;
+import FYGuide2.FYGuide2.rest.DTO.PathsGuiaDTO;
+import FYGuide2.FYGuide2.rest.DTO.ReseñaDTO;
+import FYGuide2.FYGuide2.rest.DTO.ReseñaDTO;
 import FYGuide2.FYGuide2.service.GuiaService;
 import FYGuide2.FYGuide2.service.ServicioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,10 +96,11 @@ public class GuiaController {
     public ResponseEntity<List<Guia>> searchGuias(
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String lastName,
-            @RequestParam(required = false) String location
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) Double rating
     ) {
 
-        List<Guia> guias = guiaService.searchGuias(firstName, lastName, location);
+        List<Guia> guias = guiaService.searchGuias(firstName, lastName, location, rating);
         return new ResponseEntity<>(guias, HttpStatus.OK);
     }
 
@@ -114,5 +121,24 @@ public class GuiaController {
         } else {
             return new ResponseEntity<>("No puedes contratar este servicio", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping("/{idGuia}/reseña/{idTurista}")
+    public ResponseEntity<String> addReseña(
+            @PathVariable Long idGuia,
+            @PathVariable Long idTurista,
+            @RequestBody ReseñaDTO reseña
+    ) {
+        String trofeo = guiaService.addReseña(idGuia, idTurista, reseña);
+        String mensaje = "Reseña agregada";
+        if(trofeo != null) {
+            mensaje = trofeo;
+        }
+
+
+
+        return new ResponseEntity<>(mensaje, HttpStatus.CREATED);
+
+
     }
 }

@@ -15,4 +15,21 @@ import org.springframework.http.ResponseEntity;
 @AllArgsConstructor
 public class UserController {
 
+    private final UserService userService;
+
+    @GetMapping("/{userId}/trofeo")
+    public ResponseEntity<String> getTrofeo(@PathVariable Long userId) {
+        User user = userService.getUserById(userId);
+        if (user != null) {
+            String trofeo = user.getTrofeo();
+            if (trofeo != null) {
+                return new ResponseEntity<>(trofeo, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No tiene un trofeo", HttpStatus.NOT_FOUND);
+            }
+        } else {
+            return new ResponseEntity<>("No se encontro al usuario", HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

@@ -23,7 +23,13 @@ public class FacturaService {
     }
 
     public String pagarFactura(Factura factura) {
-        String notificacion = factura.pagar();
+        String notificacion = factura.pagarTotal();
+        facturaRepository.save(factura);
+        return notificacion;
+    }
+
+    public String pagarReserva(Factura factura) {
+        String notificacion = factura.pagarReserva();
         facturaRepository.save(factura);
         return notificacion;
     }

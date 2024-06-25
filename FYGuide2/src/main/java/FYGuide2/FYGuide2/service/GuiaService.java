@@ -1,6 +1,8 @@
 package FYGuide2.FYGuide2.service;
 
 import FYGuide2.FYGuide2.model.Reserva.Reserva;
+import FYGuide2.FYGuide2.model.Reseña;
+import FYGuide2.FYGuide2.repository.ReseñaRepository;
 import FYGuide2.FYGuide2.repository.ServicioRepository;
 import FYGuide2.FYGuide2.rest.DTO.GuiaDTO;
 
@@ -9,6 +11,8 @@ import FYGuide2.FYGuide2.model.Servicio;
 import FYGuide2.FYGuide2.model.Turista;
 import FYGuide2.FYGuide2.repository.GuiaRepository;
 import FYGuide2.FYGuide2.repository.TuristaRepository;
+import FYGuide2.FYGuide2.rest.DTO.ReseñaDTO;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -26,12 +30,15 @@ public class GuiaService {
 
     private final ServicioRepository servicioRepository;
 
+    private final ReseñaRepository reseñaRepository;
+
 
     @Autowired
-    public GuiaService(GuiaRepository guiaRepository, TuristaRepository turistaRepository, ServicioRepository servicioRepository) {
+    public GuiaService(GuiaRepository guiaRepository, TuristaRepository turistaRepository, ServicioRepository servicioRepository,  ReseñaRepository reseñaRepository) {
         this.guiaRepository = guiaRepository;
         this.turistaRepository = turistaRepository;
         this.servicioRepository = servicioRepository;
+        this.reseñaRepository = reseñaRepository;
     }
 
 
@@ -83,17 +90,19 @@ public class GuiaService {
         if (guiaAborrar.isPresent()) {
             Guia guia = guiaAborrar.get();
 
+
+
             // Crear turista a partir de guia
             Turista turistaAcrear = new Turista(
-                    guia.getUserId(),
                     guia.getEmail(),
-                    guia.getUsername(),
+                    guia.getUserId(),
                     guia.getUserPassword(),
+                    guia.getUsername(),
+                    guia.getSex(),
                     guia.getFirstName(),
                     guia.getLastName(),
                     guia.getDni(),
                     guia.getCelular(),
-                    guia.getSex(),
                     guia.getProfilePic()
             );
 
@@ -104,17 +113,18 @@ public class GuiaService {
             guiaRepository.deleteById(guiaAborrar.get().getUserId());
             return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-         else {
+        else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
     }
 
-    public List<Guia> searchGuias(String firstName, String lastName, String location) {
+    public List<Guia> searchGuias(String firstName, String lastName, String location, Double rating){
         Specification<Guia> spec = Specification
                 .where(GuiaDTO.hasFirstName(firstName))
                 .and(GuiaDTO.hasLastName(lastName))
-                .and(GuiaDTO.hasCity(location));
+                .and(GuiaDTO.hasCity(location))
+                .and(GuiaDTO.rating(rating));
 
         return guiaRepository.findAll(spec);
     }
@@ -160,15 +170,47 @@ public class GuiaService {
             reservaFechaInicioCal.set(Calendar.MILLISECOND, 0);
             Date reservaFechaInicio = reservaFechaInicioCal.getTime();
 
-            if (reservaFechaInicio.equals(fechaInicio)) {
+            if (reservaFechaInicio.equals(fechaInicio) && (
+                            Objects.equals(reserva.getEstado(), "Aceptado") ||
+                            Objects.equals(reserva.getEstado(), "Pendiente"))){
                 return false;
-            }
+            };
         }
         return true;
+    };
+
+    public String addReseña(Long guiaId, Long idTurista, ReseñaDTO reseñaRequest) {
+        Guia guia = guiaRepository.findById(guiaId).orElse(null);
+        Turista turista = turistaRepository.findById(idTurista).orElse(null);
+
+        String comentario = reseñaRequest.getComentario();
+        Integer puntuacion = reseñaRequest.getPuntuacion();
+
+
+        Reseña reseña = new Reseña(turista.getUserId(), guia.getUserId(), comentario, puntuacion);
+        reseñaRepository.save(reseña);
+
+
+
+
+        guia.setCantReseñas(guia.getCantReseñas() + 1);
+        guia.setPuntuacion(guia.getPuntuacion() + (double)puntuacion);
+        guia.setPuntuacionTotal(guia.getPuntuacion() / (double)guia.getCantReseñas());
+        turista.setCantReseñas(turista.getCantReseñas() + 1);
+
+
+
+        guia.notificarTrofeo(2);
+        String a = turista.notificarTrofeo(1);
+
+
+
+        guiaRepository.save(guia);
+        turistaRepository.save(turista);
+
+        return a;
+
     }
-
-
-
 
 
 }
