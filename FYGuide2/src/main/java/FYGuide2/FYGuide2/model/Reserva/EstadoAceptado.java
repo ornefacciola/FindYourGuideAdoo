@@ -43,16 +43,11 @@ public class EstadoAceptado implements EstadoReserva{
 
     @Override
     public Notificacion finalizarReserva(Reserva reserva) {
-        Factura factura = new Factura(
-                reserva.getTuristaId(),
-                new Date(),
-                reserva.calcularSubtotal(),
-                reserva.calcularComision(),
-                reserva.calcularImporteFinal(),
-                "No pagada");
 
 
-        reserva.setFactura(factura);
+        reserva.getFactura().setImporteFinal(reserva.calcularImporteFinal());
+        reserva.getFactura().setComision(reserva.calcularComision());
+        reserva.getFactura().setEstado("Total no pagado");
         reserva.setEstadoReserva(new EstadoFinalizado());
         reserva.setEstado("Finalizado");
 

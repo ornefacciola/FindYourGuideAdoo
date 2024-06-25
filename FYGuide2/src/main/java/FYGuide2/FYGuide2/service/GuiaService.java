@@ -161,12 +161,14 @@ public class GuiaService {
             reservaFechaInicioCal.set(Calendar.MILLISECOND, 0);
             Date reservaFechaInicio = reservaFechaInicioCal.getTime();
 
-            if (reservaFechaInicio.equals(fechaInicio)) {
+            if (reservaFechaInicio.equals(fechaInicio) && (
+                            Objects.equals(reserva.getEstado(), "Aceptado") ||
+                            Objects.equals(reserva.getEstado(), "Pendiente"))){
                 return false;
-            }
+            };
         }
         return true;
-    }
+    };
 
 
 

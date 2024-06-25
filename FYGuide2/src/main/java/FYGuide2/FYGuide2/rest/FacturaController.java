@@ -26,12 +26,24 @@ public class FacturaController {
         return new ResponseEntity<>(facturas, HttpStatus.OK);
     }
 
-    @PutMapping("/{idFactura}/pagar")
+    @PutMapping("/{idFactura}/pagar-total")
     public ResponseEntity<String> pagarFactura(@PathVariable Long idFactura) {
         Factura factura = facturaService.getFacturaById(idFactura);
 
         if (factura != null) {
             String noti = facturaService.pagarFactura(factura);
+            return new ResponseEntity<>(noti, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/{idFactura}/pagar-reserva")
+    public ResponseEntity<String> pagarReserva(@PathVariable Long idFactura) {
+        Factura factura = facturaService.getFacturaById(idFactura);
+
+        if (factura != null) {
+            String noti = facturaService.pagarReserva(factura);
             return new ResponseEntity<>(noti, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

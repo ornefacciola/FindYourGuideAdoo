@@ -44,27 +44,47 @@ public class Factura {
     @Column(name = "estado")
     private String estado;
 
+    @Column(name = "anticipo")
+    private Double anticipo;
+
     @Transient
     private AdapterPagos adapterPagos;
 
 
-    public Factura(Long turista, Date fecha, double subtotal, double comision, double importeFinal, String estado) {
+    public Factura(Long turista, Date fecha, double subtotal, double comision, double importeFinal,  double anticipo, String estado) {
         this.turista = turista;
         this.fecha = fecha;
         this.subtotal = subtotal;
         this.comision = comision;
         this.importeFinal = importeFinal;
         this.estado = estado;
+        this.anticipo = anticipo;
     }
 
 
-    public String pagar(){
+    public String pagarReserva(){
+        if (estado.equals("Anticipo pagado")){
+            return "El anticipo ya fue pagado";
+        }
+        setEstado("Anticipo pagado");
+        setAdapterPagos(new Stripe());
+        return adapterPagos.pagarReserva(anticipo, fecha);
+    }
+
+
+
+    public String pagarTotal(){
         if (estado.equals("Pagado")){
             return "La factura ya fue pagada";
         }
-        setEstado("Pagado");
-        setAdapterPagos(new Stripe());
-        return adapterPagos.pagar(importeFinal, fecha);
+        if (estado.equals("Total no pagado")){
+            setEstado("Pagado");
+            setAdapterPagos(new Stripe());
+            return adapterPagos.pagarTotal(importeFinal, fecha);
+        }else{
+            return "No se puede pagar la factura, aun no finalizo el viaje";
+        }
+
     }
 
 

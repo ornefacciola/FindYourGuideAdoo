@@ -8,7 +8,13 @@ import java.util.Date;
 
 public class Stripe implements AdapterPagos{
 
-    public String pagar(Double importeFinal, Date fecha){
+    @Override
+    public String pagarReserva(Double importeFinal, Date fecha){
+        return "El dia: " + fecha + " pagaste un total de $" + importeFinal + ", con Stripe";
+    }
+
+    @Override
+    public String pagarTotal(Double importeFinal, Date fecha){
         return "El dia: " + fecha + " pagaste un total de $" + importeFinal + ", con Stripe";
     }
 

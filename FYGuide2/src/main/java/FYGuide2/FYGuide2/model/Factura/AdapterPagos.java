@@ -6,6 +6,7 @@ import java.util.Date;
 
 public interface AdapterPagos {
 
-    String pagar(Double importeFinal, Date fecha);
+    String pagarReserva(Double importeFinal, Date fecha);
+    String pagarTotal(Double importeFinal, Date fecha);
 
 }
