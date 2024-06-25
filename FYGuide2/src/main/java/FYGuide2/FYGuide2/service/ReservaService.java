@@ -8,8 +8,11 @@ import FYGuide2.FYGuide2.model.Turista;
 import FYGuide2.FYGuide2.model.ViajesFinalizados;
 import FYGuide2.FYGuide2.repository.ReservaRepository;
 import FYGuide2.FYGuide2.repository.ViajesFinalizadosRepository;
+import FYGuide2.FYGuide2.rest.DTO.ReservaDTO;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Service
@@ -30,8 +33,11 @@ public class ReservaService {
         return reservaRepository.findById(idReserva).orElse(null);
     }
 
-    public Notificacion addReserva(Servicio servicio, Date fechaInicio, String destino, Long turista) {
-        Reserva reserva = new Reserva(servicio, fechaInicio, destino, turista,servicio.getPrecio() * 0.25);
+    public Notificacion addReserva(Servicio servicio, ReservaDTO reservaDTO, Long turista) {
+        LocalDate localDate = reservaDTO.getFechaInicio();
+        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        Reserva reserva = new Reserva(servicio, date, reservaDTO.getDestino(), turista,servicio.getPrecio() * 0.25);
         Notificacion notificacion = new Notificacion("Reserva creada", new Date(), turista);
         reservaRepository.save(reserva);
         return notificacion;

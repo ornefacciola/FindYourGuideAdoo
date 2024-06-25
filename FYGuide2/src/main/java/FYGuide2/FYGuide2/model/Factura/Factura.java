@@ -96,9 +96,9 @@ public class Factura {
         }
 
         if (estado.equals("Punitorio no pagado")) {
-            setEstado("Pagado");
+            setEstado("Punitorio pagado");
             setAdapterPagos(new Stripe());
-            return adapterPagos.pagarTotal(punitorio, fecha);
+            return adapterPagos.pagarPunitorio(punitorio, fecha);
         } else {
             return "No se puede pagar el punitorio, aun no se cancelo la reserva";
         }

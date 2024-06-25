@@ -5,6 +5,7 @@ import FYGuide2.FYGuide2.model.Notificador.Notificacion;
 import FYGuide2.FYGuide2.model.Notificador.Notificador;
 import FYGuide2.FYGuide2.model.Reserva.Reserva;
 import FYGuide2.FYGuide2.model.Servicio;
+import FYGuide2.FYGuide2.rest.DTO.ReservaDTO;
 import FYGuide2.FYGuide2.service.GuiaService;
 import FYGuide2.FYGuide2.service.ReservaService;
 import FYGuide2.FYGuide2.service.ServicioService;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 @RestController
@@ -103,14 +106,17 @@ public class ReservaController {
     public ResponseEntity<Notificacion> realizarReserva(
             @PathVariable Long idServicio,
             @PathVariable Long idTurista,
-            @RequestParam Date fechaInicio,
-            @RequestParam String destino
+            @RequestBody ReservaDTO reserva
     ) {
-        boolean isAvaible = guiaService.isGuiaAvaible(idServicio, fechaInicio, destino);
+
+        LocalDate localDate = reserva.getFechaInicio();
+        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        boolean isAvaible = guiaService.isGuiaAvaible(idServicio, date, reserva.getDestino());
 
         if (isAvaible) {
             Servicio servicio = servicioService.getServiceById(idServicio);
-            Notificacion noti = reservaService.addReserva(servicio, fechaInicio, destino, idTurista);
+            Notificacion noti = reservaService.addReserva(servicio, reserva, idTurista);
             return new ResponseEntity<>(noti, HttpStatus.CREATED);
         } else {
             Notificacion noti= new Notificacion("No puedes contratar este servicio", new Date(), null);
