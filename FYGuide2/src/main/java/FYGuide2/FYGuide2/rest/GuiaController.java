@@ -4,10 +4,15 @@ import FYGuide2.FYGuide2.model.Guia;
 import FYGuide2.FYGuide2.model.Notificador.Notificacion;
 import FYGuide2.FYGuide2.model.Servicio;
 import FYGuide2.FYGuide2.model.Turista;
+import FYGuide2.FYGuide2.rest.DTO.DeleteGuiaDTO;
 import FYGuide2.FYGuide2.service.GuiaService;
 import FYGuide2.FYGuide2.service.ServicioService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.http.HttpStatus;
@@ -30,16 +35,16 @@ public class GuiaController {
         this.guiaService = guiaService;
         this.servicioService = servicioService;
     }
-    /*
-    @PostMapping("/add")
-    public ResponseEntity<Guia> addGuia(@RequestBody Guia guia) {
-        Guia savedGuia = guiaService.addGuia(guia);
-        if (savedGuia != null) {
-            return new ResponseEntity<>(savedGuia, HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }*/
+        /*
+        @PostMapping("/add")
+        public ResponseEntity<Guia> addGuia(@RequestBody Guia guia) {
+            Guia savedGuia = guiaService.addGuia(guia);
+            if (savedGuia != null) {
+                return new ResponseEntity<>(savedGuia, HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        }*/
 
     @GetMapping("/{guiaId}")
     public ResponseEntity<Guia> getGuiaById(@PathVariable Long guiaId) {
@@ -56,12 +61,19 @@ public class GuiaController {
         Iterable<Guia> guias = guiaService.getAllGuias();
         return new ResponseEntity<>(guias, HttpStatus.OK);
     }
-
+    /*
     @DeleteMapping("/delete/{guiaId}")
     public ResponseEntity<Void> deleteGuia(@PathVariable Long guiaId) {
         guiaService.deleteGuia(guiaId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    } */
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteGuia(@RequestBody DeleteGuiaDTO request) {
+        guiaService.deleteGuia(request.getGuiaId());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 
     @PostMapping("/{guiaId}/services/add")
     public ResponseEntity<Optional<Guia>> addServiceToGuia(@PathVariable Long guiaId, @RequestBody Servicio servicio) {
