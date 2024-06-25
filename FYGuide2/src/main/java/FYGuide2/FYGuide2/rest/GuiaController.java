@@ -34,8 +34,10 @@ public class GuiaController {
         this.servicioService = servicioService;
     }
 
-    @GetMapping("/{guiaId}")
-    public ResponseEntity<Guia> obtenerGuia(@PathVariable Long guiaId) {
+    @GetMapping("/getById")
+    public ResponseEntity<Guia> obtenerGuia(@RequestBody PathsGuiaDTO request) {
+        Long guiaId = request.getGuiaId(); // Extract guiaId from request body
+
         Guia guia = guiaService.getGuiaById(guiaId);
         if (guia != null) {
             return new ResponseEntity<>(guia, HttpStatus.OK);
@@ -49,7 +51,6 @@ public class GuiaController {
         Iterable<Guia> guias = guiaService.getAllGuias();
         return new ResponseEntity<>(guias, HttpStatus.OK);
     }
-
 
     @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteGuia(@RequestBody PathsGuiaDTO request) {

@@ -105,10 +105,8 @@ public class GuiaService {
                     guia.getProfilePic()
             );
 
-            // Guardar el turista en el repositorio de Turista
             turistaRepository.save(turistaAcrear);
 
-            // Eliminar el guia
             guiaRepository.deleteById(guiaAborrar.get().getUserId());
             return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
