@@ -84,7 +84,6 @@ public abstract class User implements UserDetails {
 
         @PostLoad
         public void postLoad() {
-
                 this.observer = new ObserverTrofeo();
         }
 

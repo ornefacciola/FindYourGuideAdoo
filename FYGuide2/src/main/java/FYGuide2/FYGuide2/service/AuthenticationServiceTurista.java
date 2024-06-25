@@ -31,6 +31,7 @@ public class AuthenticationServiceTurista {
                 .celular(request.getCelular())
                 .sex(request.getSex())
                 .profilePic(request.getProfilePic())
+                .cantReseñas(0)
                 .build();
 
         repository.save(user);
