@@ -5,6 +5,7 @@ import FYGuide2.FYGuide2.model.Notificador.Notificacion;
 import FYGuide2.FYGuide2.model.Servicio;
 import FYGuide2.FYGuide2.model.Turista;
 import FYGuide2.FYGuide2.rest.DTO.DeleteGuiaDTO;
+import FYGuide2.FYGuide2.rest.DTO.ReseñaDTO;
 import FYGuide2.FYGuide2.service.GuiaService;
 import FYGuide2.FYGuide2.service.ServicioService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -131,9 +132,22 @@ public class GuiaController {
         }
     }
 
+    @PostMapping("/{idGuia}/reseña/{idTurista}")
+    public ResponseEntity<String> addReseña(
+            @PathVariable Long idGuia,
+            @PathVariable Long idTurista,
+            @RequestBody ReseñaDTO reseña
+    ) {
+        String trofeo = guiaService.addReseña(idGuia, idTurista, reseña);
+        String mensaje = "Reseña agregada";
+        if(trofeo != null) {
+            mensaje = trofeo;
+        }
 
 
 
+        return new ResponseEntity<>(mensaje, HttpStatus.CREATED);
 
 
+    }
 }

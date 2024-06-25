@@ -39,7 +39,6 @@ public class ReservaController {
 
     @GetMapping("/{idReserva}")
     public ResponseEntity<Reserva> getReservaById(@PathVariable Long idReserva) {
-        System.out.println("GET RESERVA: " + idReserva);
         Reserva reserva = reservaService.getReservaById(idReserva);
 
         if (reserva != null) {
@@ -96,7 +95,6 @@ public class ReservaController {
             Notificacion noti = reservaService.finalizarReserva(reserva);
             return new ResponseEntity<>(noti, HttpStatus.OK);
         } else {
-            System.out.println("Hola");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

@@ -1,6 +1,8 @@
 package FYGuide2.FYGuide2.service;
 
 import FYGuide2.FYGuide2.model.Reserva.Reserva;
+import FYGuide2.FYGuide2.model.Reseña;
+import FYGuide2.FYGuide2.repository.ReseñaRepository;
 import FYGuide2.FYGuide2.repository.ServicioRepository;
 import FYGuide2.FYGuide2.rest.DTO.GuiaDTO;
 
@@ -9,6 +11,7 @@ import FYGuide2.FYGuide2.model.Servicio;
 import FYGuide2.FYGuide2.model.Turista;
 import FYGuide2.FYGuide2.repository.GuiaRepository;
 import FYGuide2.FYGuide2.repository.TuristaRepository;
+import FYGuide2.FYGuide2.rest.DTO.ReseñaDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -27,12 +30,15 @@ public class GuiaService {
 
     private final ServicioRepository servicioRepository;
 
+    private final ReseñaRepository reseñaRepository;
+
 
     @Autowired
-    public GuiaService(GuiaRepository guiaRepository, TuristaRepository turistaRepository, ServicioRepository servicioRepository) {
+    public GuiaService(GuiaRepository guiaRepository, TuristaRepository turistaRepository, ServicioRepository servicioRepository,  ReseñaRepository reseñaRepository) {
         this.guiaRepository = guiaRepository;
         this.turistaRepository = turistaRepository;
         this.servicioRepository = servicioRepository;
+        this.reseñaRepository = reseñaRepository;
     }
 
 
@@ -84,17 +90,19 @@ public class GuiaService {
         if (guiaAborrar.isPresent()) {
             Guia guia = guiaAborrar.get();
 
-            // Crear turista a partir de guia
+
+
+                // Crear turista a partir de guia
             Turista turistaAcrear = new Turista(
-                    guia.getUserId(),
                     guia.getEmail(),
-                    guia.getUsername(),
+                    guia.getUserId(),
                     guia.getUserPassword(),
+                    guia.getUsername(),
+                    guia.getSex(),
                     guia.getFirstName(),
                     guia.getLastName(),
                     guia.getDni(),
                     guia.getCelular(),
-                    guia.getSex(),
                     guia.getProfilePic()
             );
 
@@ -170,8 +178,35 @@ public class GuiaService {
         return true;
     };
 
+    public String addReseña(Long guiaId, Long idTurista, ReseñaDTO reseñaRequest) {
+        Guia guia = guiaRepository.findById(guiaId).orElse(null);
+        Turista turista = turistaRepository.findById(idTurista).orElse(null);
+
+        String comentario = reseñaRequest.getComentario();
+        Integer puntuacion = reseñaRequest.getPuntuacion();
 
 
+        Reseña reseña = new Reseña(turista.getUserId(), guia.getUserId(), comentario, puntuacion);
+        reseñaRepository.save(reseña);
+
+
+
+
+        guia.setCantReseñas(guia.getCantReseñas() + 1);
+        guia.setPuntuacion(guia.getPuntuacion() + (double)puntuacion);
+        turista.setCantReseñas(turista.getCantReseñas() + 1);
+
+        guia.notificarTrofeo(2);
+        String a = turista.notificarTrofeo(1);
+
+
+
+        guiaRepository.save(guia);
+        turistaRepository.save(turista);
+
+        return a;
+
+    }
 
 
 }

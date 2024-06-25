@@ -23,6 +23,8 @@ import java.util.List;
 @Entity
 public class Turista extends User{
 
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "turista_id")
     private Turista turista;
@@ -33,9 +35,15 @@ public class Turista extends User{
 
     public Turista(){}
 
-    public Turista(Long userId, String email, String username, String userPassword, String firstName, String lastName, Integer dni, Integer celular, String sex, String profile_pic) {
-        super(userId, email, username, userPassword, firstName, lastName, dni, celular, sex, profile_pic);
+
+    //public Turista(Long userId, String email, String username, String userPassword, String firstName, String lastName, Integer dni, Integer celular, String sex, String profile_pic) {
+    public Turista(String email, Long userId, String userPassword, String username, String sex, String firstName, String lastName, Integer dni, Integer celular, String profilePic) {
+        //super(userId, email, username, userPassword, firstName, lastName, dni, celular, sex, profile_pic);
+        super(email, userId, userPassword, username, sex, firstName, lastName, dni, celular, profilePic);
     }
+
+    //super(email, userId, userPassword, username, sex, firstName, lastName, dni, celular, profile_pic);
+
 
     @Override
     @Transient

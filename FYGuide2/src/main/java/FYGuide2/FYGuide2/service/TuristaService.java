@@ -55,17 +55,19 @@ public class TuristaService {
         if (turistaOptional.isPresent()) {
             Turista turista = turistaOptional.get();
 
-            // Create Guia from Turista
+
+
+                // Create Guia from Turista
             Guia guiaToCreate = new Guia(
-                    turista.getUserId(),
                     turista.getEmail(),
-                    turista.getUsername(),
+                    turista.getUserId(),
                     turista.getUserPassword(),
+                    turista.getUsername(),
+                    turista.getSex(),
                     turista.getFirstName(),
                     turista.getLastName(),
                     turista.getDni(),
                     turista.getCelular(),
-                    turista.getSex(),
                     turista.getProfilePic(),
                     "", // licencia, you can set default or fetch from another source
                     Collections.emptyList() // locations, you can set default or fetch from another source
