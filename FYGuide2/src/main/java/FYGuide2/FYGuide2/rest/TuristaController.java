@@ -71,7 +71,6 @@ public class TuristaController {
         return response;
     }
 
-
     @GetMapping("/{turistaId}/facturas")
     public ResponseEntity<Iterable<Factura>> getFacturas(@PathVariable Long turistaId) {
         Iterable<Factura> facturas = turistaService.getFacturas(turistaId);
